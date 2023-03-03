@@ -1,0 +1,6 @@
+// the configured options and settings for layer1 
+#define Layer1_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
+#define Layer1_VERSION_MINOR @PROJECT_VERSION_MINOR@
+#define Layer1_VERSION_PATCH @PROJECT_VERSION_PATCH@
+#define Layer1_VERSION "@PROJECT_VERSION@"
+

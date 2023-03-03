@@ -1,0 +1,33 @@
+@PACKAGE_INIT@
+
+include (CMakeFindDependencyMacro)
+
+# ---------------------------------------------------------------------------
+# Dependencies
+# ---------------------------------------------------------------------------
+if (CMAKE_SYSTEM_NAME STREQUAL "SunOS" OR CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	set (THREADS_PREFER_PTHREAD_FLAG ON)
+endif ()
+find_dependency (Threads)
+
+find_dependency (Boost @Layer1_BOOST_VERSION@ COMPONENTS locale)
+
+# ---------------------------------------------------------------------------
+# Targets
+# ---------------------------------------------------------------------------
+if (NOT TARGET layer1::layer1)
+	include ("${CMAKE_CURRENT_LIST_DIR}/layer1-targets.cmake")
+endif ()
+
+# ---------------------------------------------------------------------------
+# Components
+# ---------------------------------------------------------------------------
+foreach(_comp ${layer1_FIND_COMPONENTS})
+	include("${CMAKE_CURRENT_LIST_DIR}/layer1-${_comp}-config.cmake" OPTIONAL RESULT_VARIABLE _FOUND)
+	if (NOT _FOUND)
+		set (layer1_FOUND False)
+		set (layer1_NOT_FOUND_MESSAGE "Unsupported component: ${_comp}")
+	endif()
+endforeach()
+
+list (PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/")
